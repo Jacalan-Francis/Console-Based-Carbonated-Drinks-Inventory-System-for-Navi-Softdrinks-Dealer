@@ -1,0 +1,522 @@
+package jacalan;
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+class Jacalan {
+    static Scanner scanner = new Scanner(System.in);
+    static HashMap<String, String> users = new HashMap<>();
+    static HashMap<String, String> roles = new HashMap<>();
+    static HashMap<String, Integer> stocks = new HashMap<>();
+    static HashMap<String, String> time123 = new HashMap<>();
+    static HashMap<String, ArrayList<String>> History123 = new HashMap<>(); 
+    static ArrayList<String> time1234 = new ArrayList<>();
+    static DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    public static void main(String[] args) {
+        
+        users.put("FrancisMain", "123");
+        users.put("GabrielBackup", "123");
+        users.put("Jaspher", "123");
+        users.put("Deborah", "123");
+        users.put("Diane", "123");
+        users.put("Onyx", "123");
+        
+        roles.put("FrancisMain", "admin");
+        roles.put("GabrielBackup", "admin");
+        roles.put("Jaspher", "staff");
+        roles.put("Deborah", "staff");
+        roles.put("Diane", "staff");
+        roles.put("Onyx", "staff");
+        
+        Available("Sprite",13, "stock");
+        Available("Coca cola", 12, "stock");
+        Available("Fanta", 23, "stock");
+        Available("Pepsi", 17, "stock");
+        Available("7up", 20, "stock");
+        
+        loggggg("System started");
+
+        while (true) {
+
+            System.out.println("        ROLE");
+            System.out.println("-------------------------");
+            System.out.println("1. Admin Login");
+            System.out.println("2. Staff Login");
+            System.out.println("3. Create Account");
+            System.out.println("4. Logout");
+            System.out.println("");
+            System.out.print("===> ");
+            String Whatthehell = scanner.nextLine();
+
+            switch (Whatthehell) {
+                case "1" -> login_brother("admin");
+                case "2" -> login_brother("staff");
+                case "3" -> Account();
+                case "4" -> {
+                    loggggg("System shutdown");
+                    System.out.println("Goodbye!"); 
+                    return;
+                }
+                default -> System.out.println("Invalid option, try again");
+            }
+        }
+    }
+
+    static void Available(String name, int quantity, String reason) {
+        stocks.put(name, quantity);
+        String time12345 = date.format(LocalDateTime.now());
+        time123.put(name, time12345);
+        
+        ArrayList<String> history = new ArrayList<>();
+        history.add("[" + time12345 + "] " + reason + " - Quantity: " + quantity);
+        History123.put(name, history);
+    }
+    
+    static void adddddddstocks(String name, String action, int croissant, int croissant1) {
+    String time12345 = date.format(LocalDateTime.now());
+    String historyEntry = "[" + time12345 + "] " + action + " - Quantity: " + croissant + " -> " + croissant1;
+        
+        if (History123.containsKey(name)) {
+            History123.get(name).add(historyEntry);
+        } else {
+            ArrayList<String> history = new ArrayList<>();
+            history.add(historyEntry);
+            History123.put(name, history);
+        }
+    }
+    
+    static void loggggg(String action) {
+    String time12345 = date.format(LocalDateTime.now());
+        time1234.add("[" + time12345 + "] " + action);
+    }
+
+    static void login_brother(String role) {
+    System.out.println("\n--- " + role.toUpperCase() + " LOGIN ---");
+    System.out.print("Username: ");
+    String user = scanner.nextLine();
+    System.out.print("Password: ");
+    String pass = scanner.nextLine();
+
+    if (users.containsKey(user) && users.get(user).equals(pass)) {
+    if (roles.get(user).equals(role)) {
+        loggggg(role.toUpperCase() + " login: " + user);
+        
+    System.out.println("Login successful!");
+                
+    if (role.equals("staff")) 
+                    STAFFPART(user);
+        else 
+                    ADMINPART(user);
+    } else {
+    loggggg("Failed login attempt - wrong role: " + user);
+    System.out.println("Invalid role for this account!");
+        }
+    } else {
+    loggggg("Failed login attempt: " + user);
+        System.out.println("Incorrect information, please try again!");
+        }
+    }
+
+    static void STAFFPART(String user) {
+    while (true) {
+        System.out.println("       STAFF HOMEPAGE");
+        System.out.println("-------------------------");
+        System.out.println("Welcome, " + user + "!");
+        System.out.println("1. View Stocks");
+        System.out.println("2. Information");
+        System.out.println("3. Logout");
+        System.out.println("");
+        System.out.print("===> ");
+        String choice = scanner.nextLine();
+
+    switch (choice) {
+        case "1" -> Management(user);
+        case "2" -> Informationnnnnnn(user);
+        case "3" -> {
+        loggggg("Staff logout: " + user);
+        System.out.println("Logged out.");
+        return;
+        }
+        default -> System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    static void Management(String user) {
+    while (true) {
+;
+        System.out.println("    AVAILABLE STOCKS");
+        System.out.println("-------------------------");
+        System.out.println("Current Date/Time: " + date.format(LocalDateTime.now()));
+        System.out.println();
+        System.out.printf("%-3s %-20s %-10s %-20s%n", "No.", "Product Name", "Quantity", "Last Updated");
+        System.out.println("-".repeat(60));
+            
+        int index = 1;
+        ArrayList<String> stocksssssss = new ArrayList<>(stocks.keySet());
+        for (String name : stocksssssss) {
+        System.out.printf("%-3d %-20s %-10d %-20s%n", 
+                    index++, name, stocks.get(name), time123.get(name));
+            }
+            
+        System.out.println("\n--- STOCK HISTORY LOGS ---");
+        System.out.println("-".repeat(60));
+        STOCKS222();
+            
+        System.out.println("\nOptions: buy / sell / back");
+        System.out.print("===> ");
+        String action = scanner.nextLine();
+            
+    if (action.equals("back")) return;
+            
+    if (action.equals("buy") || action.equals("sell")) {
+    System.out.print("Stock name: ");
+    String name = scanner.nextLine();
+                
+    if (!stocks.containsKey(name)) { 
+    System.out.println("Stock not found."); 
+    continue; 
+    }
+                
+    System.out.print("Quantity: ");
+    int quantity;
+    try { 
+        quantity = Integer.parseInt(scanner.nextLine()); 
+    if (quantity <= 0) {
+        System.out.println("Quantity must be positive!");
+        continue;
+        }
+    } catch (NumberFormatException e) { 
+        System.out.println("Invalid quantity."); 
+        continue; 
+    }
+
+    int croissant = stocks.get(name);
+                
+    if (action.equals("sell")) {
+    if (croissant < quantity) { 
+        System.out.println("Not enough stock! Current quantity: " + croissant); 
+    continue; 
+            }
+    int croissant1 = croissant - quantity;
+    stocks.put(name, croissant1);
+    time123.put(name, date.format(LocalDateTime.now()));
+    adddddddstocks(name, "SOLD by " + user, croissant, croissant1);
+    loggggg("Staff " + user + " sold: " + quantity + " " + name);
+    System.out.println("Sale successful! Sold " + quantity + " of " + name);
+    } else if (action.equals("buy")) {
+    int croissant1 = croissant + quantity;
+    
+    stocks.put(name, croissant1);
+    time123.put(name, date.format(LocalDateTime.now()));
+    
+    adddddddstocks(name, "BOUGHT by " + user, croissant, croissant1);
+    loggggg("Staff " + user + " bought: " + quantity + " " + name);
+    System.out.println("Purchase successful! Bought " + quantity + " of " + name);
+                }
+    } else {
+    System.out.println("Invalid action. Use 'buy' or 'sell'");
+            }
+            
+    System.out.print("\nAnother transanction? yes/no: ");
+    if (!scanner.nextLine().equalsIgnoreCase("yes")) return;
+        }
+    }
+    
+    static void STOCKS222() {
+    if (History123.isEmpty()) {
+            System.out.println("No history available.");
+            return;
+        }
+        
+    for (String stocksssssss : History123.keySet()) {
+    System.out.println("\n📦 " + stocksssssss + ":");
+    ArrayList<String> history = History123.get(stocksssssss);
+            
+        int start = Math.max(0, history.size() - 5);
+        for (int i = start; i < history.size(); i++) {
+            System.out.println("  " + history.get(i));
+            }
+        if (history.size() > 5) {
+            System.out.println("  ... (" + (history.size() - 5) + " older entries)");
+            }
+        }
+    }
+
+    static void ADMINPART(String user) {
+    while (true) {
+    System.out.println(" ");
+
+    System.out.println("       ADMIN HOMEPAGE");
+    System.out.println("-------------------------");
+        
+    System.out.println("Welcome, Administrator " + user + "!");
+    System.out.println("1. Stocks");
+    System.out.println("2. Cancelled/Sold (Staff's Info)");
+    System.out.println("3. Staff's Information");
+    System.out.println("4. Admin's Information");
+    System.out.println("5. Logout");
+    System.out.println("");
+    System.out.print("===> ");
+    String choice = scanner.nextLine();
+
+    switch (choice) {
+        case "1" -> stocksofadmin(user);
+        case "2" -> transactiondfadfa();
+        case "3" -> staffinthispart();
+        case "4" -> Informationnnnnnn(user);
+        case "5" -> {
+        loggggg("Admin logout: " + user);
+        System.out.println("Logged out.");
+        return;
+            }
+        default -> System.out.println("Invalid choice.");
+            }
+        }
+    }    
+    
+    static void stocksofadmin(String user) {
+    while (true) {
+        System.out.println("    STOCK MANAGEMENT");
+        System.out.println("-------------------------");
+        System.out.println();
+        System.out.printf("%-3s %-20s %-10s %-20s%n", "No.", "Product Name", "Quantity", "Last Updated");
+        System.out.println("-".repeat(60));
+            
+        int index = 1;
+            ArrayList<String> stocksssssss = new ArrayList<>(stocks.keySet());
+            for (String name : stocksssssss) {
+                System.out.printf("%-3d %-20s %-10d %-20s%n", 
+                    index++, name, stocks.get(name), time123.get(name));
+            }
+            
+    System.out.println("\n--- COMPLETE STOCK HISTORY LOGS ---");
+    System.out.println("-".repeat(60));
+        Historyyyyyyyyy();
+            
+    System.out.println("\nadd / delete / update / back");
+    System.out.print("===> ");
+    String action = scanner.nextLine();
+            
+    if (action.equals("back")) return;
+            
+    switch (action) {
+        case "add" -> {
+        System.out.print("Stock name: ");
+        String name = scanner.nextLine();
+        System.out.print("Initial quantity: ");
+    try {
+    int quantity = Integer.parseInt(scanner.nextLine());
+    if (quantity < 0) {
+        System.out.println("Quantity cannot be negative!");
+    continue;
+        }
+    if (stocks.containsKey(name)) {
+    System.out.println("Stock exists. Use 'update' to modify quantity.");
+        } else {
+        Available(name, quantity, "Added by admin " + user);
+        loggggg("Admin " + user + " added new stock: " + name + " (How many: " + quantity + ")");
+        System.out.println("Stock added successfully!");
+        }
+} catch (NumberFormatException e) {
+        System.out.println("Invalid quantity!");
+        }
+}
+    case "delete" -> {
+        System.out.print("Stock name to delete: ");
+        String name = scanner.nextLine();
+    if (stocks.containsKey(name)) {
+        System.out.print("Are you sure? yes/no: ");
+    if (scanner.nextLine().equalsIgnoreCase("yes")) {
+        int number = stocks.remove(name);
+        time123.remove(name);
+        adddddddstocks(name, "DELETED by admin " + user, number, 0);
+        loggggg("Admin " + user + " deleted stock: " + name + " (Was: " + number + ")");
+        System.out.println("Stock deleted successfully!");
+        } else {
+            System.out.println("Deletion cancelled.");
+            }
+            } else {
+                System.out.println("Stock not found.");
+                    }
+                }
+        case "update" -> {
+            System.out.print("Stock name to update: ");
+            String name = scanner.nextLine();
+    if (stocks.containsKey(name)) {
+        int croissant = stocks.get(name);
+        System.out.println("Current quantity: " + croissant);
+        System.out.print("New quantity: ");
+        try {
+        int croissant1 = Integer.parseInt(scanner.nextLine());
+            if (croissant1 < 0) {
+                System.out.println("Quantity cannot be negative!");
+                                continue;}
+    stocks.put(name, croissant1);
+    time123.put(name, date.format(LocalDateTime.now()));
+    adddddddstocks(name, "UPDATED by admin " + user, croissant, croissant1);
+    loggggg("Admin " + user + " updated " + name + " quantity: " + croissant + " -> " + croissant1);
+        System.out.println("Quantity updated successfully!");
+    } catch (NumberFormatException e) {
+        System.out.println("Invalid quantity!");
+                        }
+        } else {
+    System.out.println("Stock not found.");
+                    }
+                }
+    default -> System.out.println("Invalid action. Use 'add', 'delete', or 'update'");
+            }
+            
+    System.out.print("\nContinue managing stocks? yes/no: ");
+    if (!scanner.nextLine().equalsIgnoreCase("yes")) 
+    return;
+        }
+    }
+    
+    static void Historyyyyyyyyy() {
+    if (History123.isEmpty()) {
+    System.out.println("No history available.");
+    return;
+        }
+        
+    for (String stocksssssss : History123.keySet()) {
+    System.out.println("\n📦 " + stocksssssss + " (Current: " + stocks.getOrDefault(stocksssssss, 0) + "):");
+    ArrayList<String> history = History123.get(stocksssssss);
+    for (String entry : history) {
+    System.out.println("  " + entry);
+            }
+        }
+    }
+
+static void transactiondfadfa() {
+    System.out.println("  STAFF TRANSACTIONS");
+    System.out.println("-------------------------");
+    System.out.println("Current Date/Time: " + date.format(LocalDateTime.now()));
+    System.out.println();
+        
+boolean found = false;
+for (String stocksssssss : History123.keySet()) {
+    ArrayList<String> history = History123.get(stocksssssss);
+    for (String entry123 : history) {
+    if (entry123.contains("by staff") || entry123.contains("SOLD") || entry123.contains("BOUGHT")) {
+    System.out.println(entry123);
+    found = true;
+        }
+    }
+}
+        
+if (!found) {
+    System.out.println("No staff transactions found.");
+    }
+  return;
+    }
+
+static void staffinthispart() {
+    while (true) {
+    System.out.println("    STAFF ACCOUNTS");
+    System.out.println("-------------------------");
+    System.out.printf("%-20s %-20s%n", "Username", "Role");
+    System.out.println("-".repeat(40));
+
+    boolean found = false;
+
+    for (String username : roles.keySet()) {
+            if (roles.get(username).equals("staff")) {
+                System.out.printf("%-20s %-20s%n", username, "staff");
+                found = true;
+        }
+    }
+
+    if (!found) {
+        System.out.println("No staff accounts found.");
+    }
+
+    System.out.println("\nOptions: delete / back");
+    System.out.print("===> ");
+    String choice = scanner.nextLine();
+
+    if (choice.equalsIgnoreCase("back")) return;
+
+    if (choice.equalsIgnoreCase("delete")) {
+    System.out.print("Enter staff username to delete: ");
+    String user = scanner.nextLine();
+
+    if (!users.containsKey(user)) {
+        System.out.println("User not found.");
+        continue;
+    }
+
+    if (!roles.get(user).equals("staff")) {
+    System.out.println("You can only delete staff accounts!");
+            continue;
+        }
+
+    System.out.print("Are you sure? yes/no: ");
+    if (scanner.nextLine().equalsIgnoreCase("yes")) {
+        users.remove(user);
+        roles.remove(user);
+        loggggg("Admin deleted staff account: " + user);
+                System.out.println("Staff deleted successfully!");
+            } else {
+                System.out.println("Deletion cancelled.");
+            }
+        } else {
+            System.out.println("Invalid option.");
+        }
+    }
+}
+
+    static void Informationnnnnnn(String user) {
+
+        System.out.println("  ACCOUNT INFORMATION");
+        System.out.println("-------------------------");
+        System.out.println("Username: " + user);
+        System.out.println("Role: " + roles.get(user));
+        System.out.print("\nChange password? yes/no: ");
+        
+        if (scanner.nextLine().equalsIgnoreCase("yes")) {
+        System.out.print("Current password: ");
+        if (scanner.nextLine().equals(users.get(user))) {
+            System.out.print("New password: ");
+            String password123 = scanner.nextLine();
+            users.put(user, password123);
+            loggggg("Password changed for user: " + user);
+            System.out.println("Password updated successfully!");
+            } else {
+            System.out.println("Incorrect current password!");
+            }
+        }
+    }
+
+    static void Account() {
+        System.out.println("\n=========================");
+        System.out.println("    CREATE ACCOUNT");
+        System.out.println("=========================");
+        System.out.print("New Username: ");
+        String user = scanner.nextLine();
+        
+        if (users.containsKey(user)) { 
+            System.out.println("Username already exists."); 
+            return; 
+        }
+        
+        System.out.print("Password: ");
+        String pass = scanner.nextLine();
+        
+        System.out.print("Role (staff/admin): ");
+        String role = scanner.nextLine();
+        
+        if (!role.equals("staff") && !role.equals("admin")) { 
+            System.out.println("Invalid role. Must be 'staff' or 'admin'."); 
+            return; 
+        }
+        
+        users.put(user, pass);
+        roles.put(user, role);
+        loggggg("New account created: " + user + " (Role: " + role + ")");
+        System.out.println("Account created successfully!");
+    }
+}
